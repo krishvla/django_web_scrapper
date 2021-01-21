@@ -1,3 +1,8 @@
+let loader = document.getElementById('loader_container');
+let page_count = 1;
+let tag = '';
+let old_tag = '';
+
 function show_message(message, alert_type){
     let toast = document.getElementById('messages');
     console.log(toast);
@@ -26,20 +31,47 @@ function show_message(message, alert_type){
 }
 
 function send_query(){
-    let tag = (document.getElementById('querytag').value).trim();
-
+    tag = (document.getElementById('querytag').value).trim();
     if(tag == '' || tag == null){
         show_message(`Search Tag can't be Empty`, 'error');
     }else{
+        if(old_tag != tag){
+            let history = document.getElementById('history');
+            history.style.display = 'block';
+            history.innerHTML += `
+                <li class="list-group-item">
+                    <span class="badge badge-pill badge-info">${tag}</span>
+                </li>
+            `
+            old_tag = tag;
+        }
         send_post(tag);
     }
 }
 
-function send_post(query){
+function insert_into_search(query){
+    document.getElementById('querytag').value = query;
+    page_count = 1;
+    send_query();
+}
+
+function get_next_ten_articles(){
+    page_count = page_count + 1;
+    send_post(tag, page_count);
+}
+
+function get_prev_ten_articles(){
+    page_count = page_count - 1;
+    send_post(tag, page_count);
+}
+
+function send_post(query, page_count = 1){
+    loader.style.display = 'block';
     let form_data = new FormData();
         let csrftoken = getCookie('csrftoken'); 
         form_data.append('csrfmiddlewaretoken',csrftoken);
         form_data.append('query',query);
+        form_data.append('page_count',page_count);
         var ajax_req = new XMLHttpRequest();
         ajax_req.open("POST", "",true);
         ajax_req.onload = function(eve){
@@ -50,39 +82,69 @@ function send_post(query){
                 let articles_content = '', tags_content = '<span class="badge badge-light">#tags: &nbsp;</span>';
                 let articles = JSON.parse(response['articles']);
                 let tags = JSON.parse(response['tags']);
-                console.log(articles);
-                articles.forEach(article => {
-                    console.log(article);
-                    articles_content += `
-                        <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5" style="width: 18rem;">
-                            <a href="${article['article_link']}" target="_blank">
-                                <div class="card">
+                let article_length = articles.length
+                if(article_length == 0){
+                    tags_container.innerHTML = '';
+                    article_container.innerHTML = `
+                        <div class="col-10 cardd">
+                            <div class="container">
+                                <h1 class="display-4" style="text-align: center;">No Articles Found.....!</h1>
+                            </div>
+                        </div>
+                    `;
+                }
+                else{
+                    articles.forEach(article => {
+                        console.log(article);
+                        articles_content += `
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 card" style="width: 18rem;">
+                                <a  href="${article['article_link']}" target="_blank">
                                     <img class="card-img-top" src="${article['article_image']}" alt="Card image cap">
                                     <div class="card-body">
                                         <h4 style="text-align: center"> ${article['title']} </h4>
                                         <p class="card-text">
-                                            By: <b> ${article['creater']} </b> </br>
-                                            Published on: ${article['published_on']} </br>
-                                            Time to Read: ${article['time_to_read']}
+                                            <i class="fa fa-user" aria-hidden="true"></i>&nbsp; By: <b> ${article['author']} </b> </br>
+                                            <i class="fa fa-book" aria-hidden="true"></i>&nbsp; Published on: ${article['published_on']} </br>
+                                            <i class="fa fa-clock" aria-hidden="true"></i>&nbsp; Time to Read: ${article['time_to_read']} </br>
+                                            <i class="fa fa-bookmark" aria-hidden="true"></i> &nbsp;Responses: ${article['responses']} 
                                         </p>
                                     </div>
-                                </div>
-                            </a>
-                        </div>
-                    `;
-                });
-                tags.forEach(tag => {
-                    tags_content += `
-                        <span><a href="${tag['tag_link']}" target='_blank' class="badge badge-secondary">${tag['tag_name']}</a>&nbsp;</span>
-                    `;
-                    
-                });
-                tags_container.innerHTML = tags_content;
-                article_container.innerHTML = articles_content;
-                show_message( response['message'], 'success')
+                                </a>
+                            </div>
+                        `;
+                    });
+                    tags.forEach(tag => {
+                        tags_content += `
+                            <span class="badge badge-secondary" onclick="insert_into_search('${tag['tag_name']}')">${tag['tag_name']}</span>&nbsp;
+                        `;
+                        
+                    });
+                    if(page_count > 1){
+                        tags_container.innerHTML = `
+                            <div class='col-8'>${tags_content}</div>
+                            <div class='col-4'>
+                                <span onclick="get_prev_ten_articles()" class="badge badge-light"> Go Back &nbsp;<i class="fa fa-angle-double-left" aria-hidden="true"></i></span>
+                                &nbsp;
+                                <span onclick="get_next_ten_articles()" class="badge badge-light"><i class="fa fa-angle-double-right" aria-hidden="true"></i>&nbsp; Get More</span>
+                            </div>
+                        `;
+
+                    }else{
+                        tags_container.innerHTML = `
+                            <div class='col-8'>${tags_content}</div>
+                            <div class='col-4'>
+                                <span onclick="get_next_ten_articles()" class="badge badge-light"><i class="fa fa-angle-double-right" aria-hidden="true"></i>&nbsp; Get More</span>
+                            </div>
+                        `;
+                    }
+                    article_container.innerHTML = articles_content;
+                }
+                loader.style.display = 'none';
+                show_message( `${response['message']} </br><i class="fa fa-clock" aria-hidden="true"></i>&nbsp; Time Taken: ${response['time_taken']} secs`, 'success')
             }
             else{
-                show_message( response['message'], 'info')
+                loader.style.display = 'none';
+                show_message( response['message'], 'error')
                 console.log("Error Occured");
             }
         };
