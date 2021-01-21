@@ -1,0 +1,67 @@
+.searchcontainer{
+    margin-top: 30px;
+}
+
+.searchbox {
+    width: 100%;
+    margin-bottom: 30px;
+}
+.searchbox .searchbar {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    color: #313131;
+    font-size: 20px;
+    appearance: none;
+    border: none;
+    outline: none;
+    background: none;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 0px 16px 0px 16px;
+    transition: 0.4s;
+}
+.searchbox .searchbar:focus {
+    box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25);
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 16px 0px 16px 0px;
+}
+
+.toast{
+    border-radius: 5px !important;
+    margin-right: 20px;
+}
+.toast-body{
+    max-width: 350px;
+}
+#messages {
+    z-index: 9999 !important;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: auto;
+}
+#toast_head{
+    text-align: center !important;
+}
+.toast .toast-header .mr-auto{
+    color: black;
+}
+.toast .toast-header.alert_success{
+    background-color: seagreen;
+}
+.toast .toast-header.alert_info{
+    background-color: rgba(0, 119, 255, 0.877) !important;
+}
+.toast .toast-header.alert_error{
+    background-color: tomato;
+}
+
+.card{
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+    background: white;
+    border-radius: 5px; 
+    margin: 10px;
+    padding-top: 10px !important;
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medium Crawler</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    <div class="container searchcontainer">
+        <div class="row">
+            <div class="col-8">
+                <div class="searchbox">
+                    <input
+                      type="text"
+                      class="searchbar"
+                      placeholder="Type Your search tag..."
+                      id="querytag"
+                      value="hero"
+                    />
+                </div>
+            </div>
+            <div class="col-4"><button class="btn btn-info" onclick="send_query()"> Search </button></div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div id="articles_containers" class="row"></div>
+    </div>
+    <div id="messages"></div>
+</body>
+<script src="{% static 'js/home.js' %}"></script>
+</html>
