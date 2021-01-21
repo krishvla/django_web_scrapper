@@ -32,3 +32,11 @@ Verify the web app is working or not,  by navigating to your server address in y
 or
 http://localhost:8000/
 ```
+
+## Flow Chart
+
+![Flow Chart Demo](demo_images/flow.png "Flow Chart")
+
+## Data Base Arch
+
+![Data Base Arch Demo](demo_images/db_arch.png "Data Base Arch")
