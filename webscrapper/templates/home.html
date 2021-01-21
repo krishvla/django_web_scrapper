@@ -13,7 +13,7 @@
 <body>
     <div class="container searchcontainer">
         <div class="row">
-            <div class="col-8">
+            <div class="col-10">
                 <div class="searchbox">
                     <input
                       type="text"
@@ -24,10 +24,13 @@
                     />
                 </div>
             </div>
-            <div class="col-4"><button class="btn btn-info" onclick="send_query()"> Search </button></div>
+            <div class="col-2"><button class="btn btn-info" onclick="send_query()"> Search </button></div>
         </div>
     </div>
-    <div class="container-fluid">
+    <div class="overflow-auto fluid_container">
+        <div id="tags_container" class="row"></div>
+    </div>
+    <div class="overflow-auto fluid_container">
         <div id="articles_containers" class="row"></div>
     </div>
     <div id="messages"></div>

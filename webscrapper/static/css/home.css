@@ -1,3 +1,7 @@
+body{
+    overflow-x: hidden !important   ;
+}
+
 .searchcontainer{
     margin-top: 30px;
 }
@@ -63,5 +67,28 @@
     background: white;
     border-radius: 5px; 
     margin: 10px;
-    padding-top: 10px !important;
 }
+
+.fluid_container{
+    margin-left: 10%;
+    max-height: 70vh;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding: 10px;
+    padding-left: 30px;
+    border-radius: 7px;
+}
+.fluid_container a{
+    text-decoration: none !important;
+    color: black !important;
+}
+
+.fluid_container a.badge{
+    color: white !important;
+}
+
+@media only screen and (max-width: 768px) {
+    .fluid_container{
+        margin: 0% 20px 0% 0% !important;
+    }
+  }

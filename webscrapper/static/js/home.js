@@ -46,25 +46,38 @@ function send_post(query){
             let response = JSON.parse(ajax_req.response);
             if (response['status'] == 200){
                 let article_container = document.getElementById('articles_containers');
-                let articles_content = '';
+                let tags_container = document.getElementById('tags_container');
+                let articles_content = '', tags_content = '<span class="badge badge-light">#tags: &nbsp;</span>';
                 let articles = JSON.parse(response['articles']);
+                let tags = JSON.parse(response['tags']);
                 console.log(articles);
                 articles.forEach(article => {
                     console.log(article);
                     articles_content += `
-                        <div class="col-5 card" style="width: 18rem;">
-                            <img class="card-img-top" src="${article['article_image']}" alt="Card image cap">
-                            <div class="card-body">
-                            <h4 style="text-align: center"> ${article['title']} </h4>
-                            <p class="card-text">
-                                By: <b> ${article['creater']} </b> </br>
-                                Published on: ${article['published_on']} </br>
-                                Time to Read: ${article['time_to_read']}
-                            </p>
-                            </div>
+                        <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5" style="width: 18rem;">
+                            <a href="${article['article_link']}" target="_blank">
+                                <div class="card">
+                                    <img class="card-img-top" src="${article['article_image']}" alt="Card image cap">
+                                    <div class="card-body">
+                                        <h4 style="text-align: center"> ${article['title']} </h4>
+                                        <p class="card-text">
+                                            By: <b> ${article['creater']} </b> </br>
+                                            Published on: ${article['published_on']} </br>
+                                            Time to Read: ${article['time_to_read']}
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
                     `;
                 });
+                tags.forEach(tag => {
+                    tags_content += `
+                        <span><a href="${tag['tag_link']}" target='_blank' class="badge badge-secondary">${tag['tag_name']}</a>&nbsp;</span>
+                    `;
+                    
+                });
+                tags_container.innerHTML = tags_content;
                 article_container.innerHTML = articles_content;
                 show_message( response['message'], 'success')
             }
